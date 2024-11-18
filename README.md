@@ -21,8 +21,7 @@ Ce projet porte sur la classification de panneau de signalisation. Pour facilite
 
 
 ### Langages utilisés :
-
-Nous avons décidé d'utiliser Python afin de construire notre algorithme et nos librairies. De plus, je l'utiliserais afin d'appeler les librairies et de procéder à l'entraînement et à l'évaluation des modèles de classification de panneaux. Enfin, nous utiliserons du `PHP` avec des langages de balisages `HTML/CSS` pour l'interface du site qui permettra d'interagir avec nos modèles.
+J'ai décidé d'utiliser Python afin de construire les algorithmes et nos librairies. De plus, je l'utiliserais afin d'appeler les librairies et de procéder à l'entraînement et à l'évaluation des modèles de classification de panneaux. Enfin, nous utiliserons du `PHP` avec des langages de balisages `HTML/CSS` pour l'interface du site qui permettra d'interagir avec nos modèles.
 
 
 
