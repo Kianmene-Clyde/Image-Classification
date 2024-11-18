@@ -1,0 +1,58 @@
+ """CLASSIFICATION TEST"""
+    "TEST 1"
+    inputs = [[1, 1], [2, 3], [3, 3]]
+    labels = [1, -1, -1]
+
+    """TEST 2"""
+    inputs = np.concatenate(
+        [np.random.random((50, 2)) * 0.9 + np.array([1, 1]), np.random.random((50, 2)) * 0.9 + np.array([2, 2])])
+    labels = np.concatenate([np.ones((50, 1)), np.ones((50, 1)) * -1.0])
+
+    """TEST 3 (XOR)"""
+    inputs = np.array([[1, 0], [0, 1], [0, 0], [1, 1]])
+    labels = np.array([1, 1, -1, -1])
+
+    """TEST 4"""
+    inputs = np.random.random((500, 2)) * 2.0 - 1.0
+    labels = np.array([1 if abs(p[0]) <= 0.3 or abs(p[1]) <= 0.3 else -1 for p in inputs])
+
+    """TEST 5"""
+    inputs = np.random.random((500, 2)) * 2.0 - 1.0
+    labels = np.array([[1, 0, 0] if -p[0] - p[1] - 0.5 > 0 > p[1] and p[0] - p[1] - 0.5 < 0 else
+                       [0, 1, 0] if -p[0] - p[1] - 0.5 < 0 < p[1] and p[0] - p[1] - 0.5 < 0 else
+                       [0, 0, 1] if -p[0] - p[1] - 0.5 < 0 < p[0] - p[1] - 0.5 and p[1] < 0 else
+                       [0, 0, 0] for p in inputs])
+
+    inputs = inputs[[not np.all(arr == [0, 0, 0]) for arr in labels]]
+    labels = labels[[not np.all(arr == [0, 0, 0]) for arr in labels]]
+
+    """TEST 6"""
+    inputs = np.random.random((1000, 2)) * 2.0 - 1.0
+    labels = np.array([[1, 0, 0] if abs(p[0] % 0.5) <= 0.25 < abs(p[1] % 0.5) else [0, 1, 0] if abs(
+        p[0] % 0.5) > 0.25 >= abs(p[1] % 0.5) else [0, 0, 1] for p in inputs])
+
+    """END OF CLASSIFICATION TEST"""
+
+    """REGRESSION TEST"""
+
+    """TEST 1"""
+    inputs = np.array([[1], [2]])
+    labels = np.array([2, 3])
+
+    """TEST 2"""
+    inputs = np.array([[1], [2], [3]])
+    labels = np.array([2, 3, 2.5])
+
+    """TEST 3"""
+    inputs = np.array([[1, 1], [2, 2], [3, 1]])
+    labels = np.array([2, 3, 2.5])
+
+    """TEST 4"""
+    inputs = np.array([[1, 1], [2, 2], [3, 3]])
+    labels = np.array([1, 2, 3])
+
+    """TEST 5"""
+    inputs = np.array([[1, 0], [0, 1], [1, 1], [0, 0]])
+    labels = np.array([2, 1, -2, -1])
+
+    """END OF REGRESSION TEST"""

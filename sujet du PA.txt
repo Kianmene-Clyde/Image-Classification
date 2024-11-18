@@ -1,0 +1,11 @@
+Problématique applicative choisie:
+->Application permettant de différencier troiis type de panneaux de signalisation: limitation à 50, sense interdit, et STOP
+
+Lien github:
+https://github.com/TomDordet/ProjetAnnuel2024
+
+sources:
+https://www.iconfinder.com/search?q=country+flags
+https://commons.wikimedia.org/w/index.php?search=image+drapeaux&title=Special:MediaSearch&go=Go&type=image
+https://www.shutterstock.com/fr/search/drapeaux?ds_ag=FF%3DShutterstock-Shutterstock-Exact_AU%3DProspecting&ds_agid=58700002001420666&ds_cid=71700000017549998&ds_eid=700000001507159&gclid=CjwKCAjw_YShBhAiEiwAMomsEEFywfOumbyjPjgoDtEjHx7vhDnURi7KaS8_JbpaI-kdVlbb2u9SbRoCxgIQAvD_BwE&gclsrc=aw.ds&kw=shutterstock&utm_campaign=CO%3DFR_LG%3DFR_BU%3DIMG_AD%3DBRAND_TS%3Dlggeneric_RG%3DEUAF_AB%3DACQ_CH%3DSEM_OG%3DCONV_PB%3DGoogle&utm_medium=cpc&utm_source=GOOGLE
+https://www.flickr.com/search/?text=drapeaux
