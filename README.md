@@ -1,43 +1,93 @@
-# Projet Annuel 2024
-> Projet annuel de 3ème année IABD ESGI
+# SignLab — Classification de panneaux
 
-------
+Projet annuel IABD ESGI de Clyde Kianmene Takuefou. SignLab permet d’entraîner, comparer et interroger **23 classifieurs Python écrits avec NumPy** sur les mêmes partitions de photos : **STOP**, **sens interdit** et **limitation à 50 km/h**. Quatre modèles C++ accessibles depuis Python complètent le parcours prévu au syllabus.
 
-### Elèves :
-Clyde KIANMENE TAKUEFOU
+Les trois dossiers de données sont vides, prêts à recevoir tes images. Les résultats de vérification fournis concernent des données synthétiques séparées.
 
+## Démarrer sous Windows
 
+Depuis PowerShell à la racine du projet avec Python 3.12 :
 
-### GitHub :
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-verified.txt
+.\.venv\Scripts\python.exe -m signlab catalog
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
 
-Lien `GitHub` du projet : https://github.com/Kianmene-Clyde/Image-Classification
+Sous macOS ou Linux, utilise `.venv/bin/python`. La version de Python et des dépendances réellement utilisée figure dans `environment.json` pour chaque expérience. Le projet fonctionne depuis sa racine, sans installation de SignLab. Pour une installation éditable avec Jupyter : `python -m pip install -e ".[notebook]"`.
 
+## Ajouter tes photos
 
+| Dossier | Classe |
+| --- | --- |
+| `data/images/stop/` | STOP |
+| `data/images/sens_interdit/` | Sens interdit |
+| `data/images/limitation_50/` | Limitation à 50 km/h |
 
-### Explication :
+Mets des photos cadrées du panneau attendu. Il faut au moins trois groupes indépendants par classe pour remplir entraînement, validation et test. Des photos répétées du même panneau ou de la même scène doivent partager un identifiant de groupe. Le guide [Données et protocole](docs/PROTOCOLE.md) décrit le CSV facultatif pour renseigner groupes, sources et licences. Le chargeur signale les fichiers illisibles, retire les doublons exacts et regroupe des quasi-doublons probables.
 
-Ce projet porte sur la classification de panneau de signalisation. Pour faciliter la mise en place du projet, j'ai sélectionné 3 types pour commencer : les `panneaux stop`, les `panneaux sens interdit`, et les `panneaux de limitation de vitesse 50`.
+## Entraîner et explorer
 
+Une fois les dossiers remplis :
 
+```powershell
+python -m signlab audit-data
+python -m signlab benchmark --output runs/premier-benchmark --quick
+python -m signlab serve --run runs/premier-benchmark
+```
 
-### Langages utilisés :
-J'ai décidé d'utiliser Python afin de construire les algorithmes et nos librairies. De plus, je l'utiliserais afin d'appeler les librairies et de procéder à l'entraînement et à l'évaluation des modèles de classification de panneaux. Enfin, nous utiliserons du `PHP` avec des langages de balisages `HTML/CSS` pour l'interface du site qui permettra d'interagir avec nos modèles.
+Ouvre [SignLab sur ton ordinateur](http://127.0.0.1:8000). Choisis un modèle, charge une photo et compare les scores de validation. Tu peux aussi lancer `python -m signlab serve` dès maintenant pour consulter le catalogue.
 
+Le mode `--quick` utilise un réglage et une graine par modèle. Retire ce drapeau pour tester les réglages et graines du catalogue. Le réglage par défaut utilise jusqu’à **2 500 images d’entraînement**, choisies par groupes pour tous les modèles. Validation et test gardent leur taille d’origine. Pour exploiter tout l’entraînement sur les modèles sans noyau, copie la configuration, mets `train_limit` à `null` et sélectionne les modèles concernés.
 
+Pour isoler une famille, étudier les courbes et produire une prédiction :
 
-### Dataset :
+```powershell
+python -m signlab benchmark --models majority logistic linear_svm mlp --output runs/comparaison-lineaire
+python -m signlab diagnose --model mlp --output runs/diagnostic-mlp
+python -m signlab predict --artifact runs/comparaison-lineaire/models/mlp.json --image data/images/stop/ma-photo.jpg
+```
 
-J'ai commencé à récupérer des images pour constituer notre dataset, les méthodes classiques sont utilisés. Nous récupérons des images par recherche Google. Pour gagner en temps, j'ai programmé un **wrapper** permettant de chercher et de télécharger des milliers d'images rapidement et de façon automatique. Autre méthode, **recueillir à la main des centaines d'images que l'on trouve sur d'autre datasets déjà mis en place** (j'ai bien pris conscience du fait que je devais récupérer seulement une maigre partie des datasets pour éviter les biais d'un dataset que nous ne maîtrisons pas et qui nuirait à l'apprentissage de nos modèles.). Enfin, la dernière méthode pour récupérer de la donnée et personnaliser réellement notre dataset est de **prendre nous-même en photo les panneaux que l'on souhaite voir apparaître dans notre dataset** en se déplaçant nous-même devant les panneaux avec un appareil photo.
+Les réglages se choisissent sur la validation. Une fois le protocole figé, `python -m signlab finalize --run runs/premier-benchmark --all-models` évalue les modèles sauvegardés sur le test. Omet `--all-models` pour évaluer uniquement le modèle retenu. Les métriques, matrices de confusion, erreurs, hyperparamètres, partitions, durées et artefacts se trouvent dans le dossier de l’expérience.
 
-------
+## Vérifier sans photos
 
-**Quelques liens** pour récupérer des données intéressantes :
+```powershell
+python scripts/synthetic_demo.py --output runs/fixture
+python -m signlab benchmark --config runs/fixture/config.json --output runs/demo --quick
+python -m signlab serve --run runs/demo
+```
 
-[IconFinder](https://www.iconfinder.com/search?q=traffic+sign)
+Les images générées servent à vérifier le parcours technique. Les répertoires de données réelles restent disponibles pour tes propres photos. Chaque expérience requiert un nouveau dossier de sortie.
 
-[Commons](https://commons.wikimedia.org/w/index.php?search=traffic+sign&title=Special:MediaSearch&go=Go&type=image)
+## Compiler les quatre modèles C++
 
-[ShutterStock](https://www.shutterstock.com/fr/search/traffic-signs?consentChanged=true&ds_ag=FF%3DShutterstock-Shutterstock-Exact_AU%3DProspecting&ds_agid=58700002001420666&ds_cid=71700000017549998&ds_eid=700000001507159&gclid=CjwKCAjw_YShBhAiEiwAMomsEEFywfOumbyjPjgoDtEjHx7vhDnURi7KaS8_JbpaI-kdVlbb2u9SbRoCxgIQAvD_BwE&gclsrc=aw.ds&kw=shutterstock&utm_campaign=CO%3DFR_LG%3DFR_BU%3DIMG_AD%3DBRAND_TS%3Dlggeneric_RG%3DEUAF_AB%3DACQ_CH%3DSEM_OG%3DCONV_PB%3DGoogle&utm_medium=cpc&utm_source=GOOGLE)
+Ouvre le terminal développeur de Visual Studio avec les outils C++ installés, ou utilise un terminal qui dispose de GCC ou Clang. Utilise un compilateur de même architecture que Python.
 
-[Flickr](https://www.flickr.com/search/?text=traffic+signs)
+```powershell
+python scripts/build_native.py
+python -m unittest tests.test_native -v
+python -m signlab benchmark --models native_linear native_svm native_mlp native_rbf --output runs/natif --quick
+```
 
+`SIGNLAB_NATIVE_LIBRARY` permet de définir le chemin vers une bibliothèque compilée ailleurs. La liaison passe par [l’interface ctypes de Python](https://docs.python.org/3/library/ctypes.html).
+
+## Étudier le projet
+
+- [Guide des 23 modèles](docs/ALGORITHMES.md) — principes, hyperparamètres, faiblesses et exercices.
+- [Données et protocole](docs/PROTOCOLE.md) — groupes, biais, métriques et comparaison des résolutions.
+- [Audit technique](docs/AUDIT.md) — défauts confirmés, remédiations et limites restantes.
+- [Notebook pédagogique](notebooks/signlab.ipynb) — exploration, entraînement, lecture des erreurs et cas XOR.
+- [Rapport technique et expérimental](docs/RAPPORT.md) — démarche et état des validations.
+- [Mesures de vérification synthétique](docs/verification-synthetique.json) — résultats enregistrés des 120 essais et du test final technique.
+- [Code des modèles Python](signlab/models) et [bibliothèque C++](native/signlab.cpp).
+
+Pour régénérer la version PDF du rapport à partir des mesures enregistrées :
+
+```powershell
+python -m pip install -e ".[report]"
+python scripts/build_report.py
+```
+
+Les anciens modèles, journaux et notes sont conservés comme archives. Les nouveaux artefacts enregistrent le prétraitement, l’ordre des classes et l’empreinte du dataset dans un format JSON versionné. L’application locale classe une image dans les trois catégories connues. Elle ne localise pas les panneaux et ses scores ne sont pas calibrés.

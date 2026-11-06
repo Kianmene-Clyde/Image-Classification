@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SignLab · Comprendre et comparer</title>
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<header><small>LABORATOIRE DE MACHINE LEARNING</small>
+<h1>SignLab</h1>
+<p>Une image, trois catégories de panneaux, plusieurs façons d’apprendre. Comparez les modèles et explorez leurs hypothèses.</p>
+</header>
+<main>
+<div class="bar"><strong>STOP · Sens interdit · Limitation à 50</strong><span class="badge" id="status">Chargement du catalogue…</span>
+</div>
+<div class="grid">
+<section class="panel">
+<h2>Tester une image</h2>
+<p class="muted">Le prétraitement sauvegardé avec le modèle est automatiquement réutilisé.</p>
+<label for="model">Modèle entraîné</label><select id="model"><option value="">Aucun modèle chargé</option></select>
+<p class="muted" id="modelDescription">
+</p>
+<label for="file">Image du panneau</label>
+<input id="file" type="file" accept="image/png,image/jpeg,image/webp,image/bmp"><img id="preview" alt="Aperçu de l’image sélectionnée">
+<button id="predict" disabled>Classifier l’image</button>
+<p id="error" role="alert">
+</p>
+<div aria-live="polite">
+<div id="prediction">
+</div>
+<p id="predictionNote" class="muted">
+</p>
+</div>
+<div class="notice">Trois classes possibles. Le modèle ne détecte pas les panneaux dans une scène et ne reconnaît pas automatiquement une image hors de ces catégories. Ses scores ne sont pas calibrés.</div>
+</section>
+<section class="panel">
+<h2>Comparer les expériences</h2>
+<p class="muted">Classement par macro-F1 de validation. Le test final est réservé à la finalisation.</p>
+<div id="results" class="tablewrap">
+</div>
+<p id="runNotice" class="notice">Les dossiers d’images sont prêts à être remplis. Aucun modèle réel n’est encore entraîné.</p>
+</section>
+</div>
+<div class="bar">
+<h2>Comprendre les algorithmes</h2>
+<label class="sr" for="filter">Filtrer par famille</label><select id="filter"><option value="">Toutes les familles</option></select>
+</div>
+<p class="muted">23 implémentations et variantes Python avec NumPy, plus 4 variantes C++ facultatives. Mêmes images et partitions, prétraitement adapté aux hypothèses de chaque modèle.</p>
+<div id="catalog" class="catalog">
+</div>
+<p class="footer">Démonstration locale · Voir docs/ALGORITHMES.md pour les équations, hyperparamètres et limites. Les tests synthétiques ne mesurent pas la performance sur des photos réelles.</p>
+</main>
+<script src="/app.js" defer>
+</script>
+</body>
+</html>

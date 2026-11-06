@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "signlab"
+version = "1.0.0"
+description = "Laboratoire pédagogique reproductible de classification de panneaux"
+requires-python = ">=3.10"
+dependencies = ["numpy>=2.0,<3", "Pillow>=10.4,<14"]
+
+[project.optional-dependencies]
+notebook = ["jupyterlab>=4,<5", "matplotlib>=3.9,<4"]
+report = ["reportlab>=4,<5"]
+
+[project.scripts]
+signlab = "signlab.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["signlab*"]
+
+[tool.setuptools.package-data]
+signlab = ["web/*.html", "web/*.css", "web/*.js"]
+

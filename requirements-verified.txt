@@ -1,0 +1,4 @@
+# Versions effectivement utilisées pour les validations locales.
+numpy==2.3.5
+Pillow==13.0.0
+
